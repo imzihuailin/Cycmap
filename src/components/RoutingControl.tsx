@@ -27,7 +27,15 @@ function createPlanOptions() {
     addWaypoints: true,
     draggableWaypoints: true,
     routeWhileDragging: true,
-    language: 'zh-CN',
+    // LRM has no built-in Chinese localization — use English here,
+    // but override the geocoder placeholders with Chinese text.
+    language: 'en',
+    geocoderPlaceholder: (i: number, n: number) => {
+      if (n === 1) return '搜索地址或点击地图...';
+      if (i === 0) return '起点';
+      if (i === n - 1) return '终点';
+      return `途经点 ${i}`;
+    },
     createMarker: (i: number, wp: L.Routing.Waypoint) => {
       const icon = i === 0 ? '🚩' : '📍';
       return L.marker(wp.latLng, {
@@ -45,7 +53,7 @@ function createPlanOptions() {
 
 export function RoutingControl({
   router,
-  language = 'zh-CN',
+  language = 'en',
   lineOptions,
   onWaypointsChanged,
   onRouteFound,
@@ -64,6 +72,9 @@ export function RoutingControl({
       showAlternatives: false,
       fitSelectedRoutes: true,
       language,
+      // Hide LRM's built-in English itinerary — we render our own Chinese RoutePanel
+      show: false,
+      collapsible: false,
       lineOptions: lineOptions || DEFAULT_LINE_OPTIONS,
       plan: L.Routing.plan([], createPlanOptions()),
     } as L.Routing.RoutingControlOptions;
