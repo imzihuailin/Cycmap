@@ -113,7 +113,7 @@ function App() {
             <RoutingControl
               key={state.engine}
               router={router}
-              language="zh-CN"
+              language="en"
               onWaypointsChanged={handleWaypointsChanged}
               onRouteFound={(route) =>
                 dispatch({ type: 'SET_ROUTE', route })
