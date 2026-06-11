@@ -157,12 +157,6 @@ export function RoutingControl({
     if (mountedRef.current) return;
     mountedRef.current = true;
 
-    // Load LRM CSS
-    const linkEl = document.createElement('link');
-    linkEl.rel = 'stylesheet';
-    linkEl.href = 'https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css';
-    document.head.appendChild(linkEl);
-
     controlRef.current = createAndAddControl();
 
     return () => {

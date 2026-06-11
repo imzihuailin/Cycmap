@@ -1,6 +1,7 @@
 /* Leaflet CSS */
 @import 'leaflet/dist/leaflet.css';
-/* Leaflet Routing Machine CSS - loaded dynamically by LRM */
+/* Leaflet Routing Machine CSS */
+@import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
 * {
   margin: 0;

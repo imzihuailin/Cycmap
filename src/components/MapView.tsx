@@ -30,7 +30,7 @@ function LocateControl() {
   const [locating, setLocating] = useState(false);
 
   useEffect(() => {
-    const control = new L.Control({ position: 'topleft' });
+    const control = new L.Control({ position: 'bottomright' });
 
     control.onAdd = () => {
       const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
@@ -41,7 +41,7 @@ function LocateControl() {
         e.preventDefault();
         e.stopPropagation();
         setLocating(true);
-        map.locate({ setView: true, maxZoom: 16 });
+        map.locate({ setView: true, maxZoom: 16, enableHighAccuracy: true, watch: false });
       });
 
       return container;
