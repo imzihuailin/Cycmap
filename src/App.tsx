@@ -34,12 +34,28 @@ const serviceOptions: Array<{ type: Exclude<ServiceType, null>; label: string; i
   { type: 'lodging', label: '住宿', icon: '🛏' },
 ];
 
-const markerIcon = L.divIcon({
-  className: 'waypoint-marker',
-  html: '<span></span>',
-  iconSize: [22, 22],
-  iconAnchor: [11, 11],
-});
+const serviceIcons: Record<Exclude<ServiceType, null>, string> = {
+  water: '💧',
+  meal: '🍚',
+  lodging: '🛏',
+};
+
+function getWaypointIcon(serviceType: ServiceType) {
+  if (serviceType) {
+    return L.divIcon({
+      className: `waypoint-marker waypoint-marker--${serviceType}`,
+      html: `<span>${serviceIcons[serviceType]}</span>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
+  }
+  return L.divIcon({
+    className: 'waypoint-marker',
+    html: '<span></span>',
+    iconSize: [22, 22],
+    iconAnchor: [11, 11],
+  });
+}
 
 function makeWaypoint(lat: number, lng: number): Waypoint {
   return {
@@ -340,7 +356,7 @@ function App() {
             <Marker
               key={point.id}
               position={[point.lat, point.lng]}
-              icon={markerIcon}
+              icon={getWaypointIcon(point.serviceType)}
               draggable
               eventHandlers={{
                 dragend(event) {
