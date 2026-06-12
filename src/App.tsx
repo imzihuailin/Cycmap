@@ -40,7 +40,20 @@ const serviceIcons: Record<Exclude<ServiceType, null>, string> = {
   lodging: '🛏',
 };
 
-function getWaypointIcon(serviceType: ServiceType) {
+function getWaypointIcon(serviceType: ServiceType, index: number, total: number) {
+  const isEnd = index === 0 || index === total - 1;
+
+  // 起点/终点始终红色圆点
+  if (isEnd) {
+    return L.divIcon({
+      className: 'waypoint-marker',
+      html: '<span></span>',
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
+    });
+  }
+
+  // 途经点：有服务类型→emoji，无服务类型→数字编号
   if (serviceType) {
     return L.divIcon({
       className: `waypoint-marker waypoint-marker--${serviceType}`,
@@ -50,10 +63,10 @@ function getWaypointIcon(serviceType: ServiceType) {
     });
   }
   return L.divIcon({
-    className: 'waypoint-marker',
-    html: '<span></span>',
-    iconSize: [22, 22],
-    iconAnchor: [11, 11],
+    className: 'waypoint-marker waypoint-marker--number',
+    html: `<span>${index}</span>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
   });
 }
 
@@ -171,6 +184,9 @@ function MapClickHandler({
   useMapEvents({
     click(event) {
       if (!adding) return;
+      // 点击在途经点 Marker 上时不添加新途经点（拖拽也会触发 click）
+      const target = event.originalEvent.target as HTMLElement | null;
+      if (target?.closest('.waypoint-marker')) return;
       onAdd(event.latlng.lat, event.latlng.lng);
     },
   });
@@ -367,11 +383,11 @@ function App() {
             maxZoom={19}
           />
           <MapClickHandler adding={addingWaypoint} onAdd={addWaypoint} />
-          {waypoints.map((point) => (
+          {waypoints.map((point, index) => (
             <Marker
               key={point.id}
               position={[point.lat, point.lng]}
-              icon={getWaypointIcon(point.serviceType)}
+              icon={getWaypointIcon(point.serviceType, index, waypoints.length)}
               draggable
               eventHandlers={{
                 dragend(event) {

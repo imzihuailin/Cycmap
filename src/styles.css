@@ -260,7 +260,8 @@ button {
 
 .waypoint-marker--water,
 .waypoint-marker--meal,
-.waypoint-marker--lodging {
+.waypoint-marker--lodging,
+.waypoint-marker--number {
   background: #fff;
   border-width: 2px;
   border-color: #2563eb;
@@ -268,7 +269,8 @@ button {
 
 .waypoint-marker--water span,
 .waypoint-marker--meal span,
-.waypoint-marker--lodging span {
+.waypoint-marker--lodging span,
+.waypoint-marker--number span {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -276,6 +278,12 @@ button {
   height: 100%;
   font-size: 18px;
   line-height: 1;
+}
+
+.waypoint-marker--number span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2563eb;
 }
 
 .map-control {
