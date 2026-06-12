@@ -186,28 +186,44 @@ function AddWaypointButton({
 }) {
   const guardRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const onToggleRef = useRef(onToggle);
+
+  // 保持回调引用最新
+  useEffect(() => {
+    onToggleRef.current = onToggle;
+  });
 
   useEffect(() => {
     const guard = guardRef.current;
     const btn = buttonRef.current;
     if (!guard) return;
 
+    // 冒泡阶段拦截 guard 上的事件，阻止继续冒泡到 Leaflet
+    // 使用冒泡阶段确保按钮的 click 处理器先执行完
     const block = (e: Event) => {
-      // 按钮本身放行，其他 guard 区域内的点击拦截
-      if (btn && btn.contains(e.target as Node)) return;
-      e.preventDefault();
       e.stopPropagation();
-      e.stopImmediatePropagation();
     };
 
-    guard.addEventListener('click', block, true);
-    guard.addEventListener('dblclick', block, true);
-    guard.addEventListener('mousedown', block, true);
+    guard.addEventListener('click', block);
+    guard.addEventListener('dblclick', block);
+    guard.addEventListener('mousedown', block);
+
+    // 按钮原生 click 处理切换
+    const handleButtonClick = () => {
+      onToggleRef.current();
+    };
+
+    if (btn) {
+      btn.addEventListener('click', handleButtonClick);
+    }
 
     return () => {
-      guard.removeEventListener('click', block, true);
-      guard.removeEventListener('dblclick', block, true);
-      guard.removeEventListener('mousedown', block, true);
+      guard.removeEventListener('click', block);
+      guard.removeEventListener('dblclick', block);
+      guard.removeEventListener('mousedown', block);
+      if (btn) {
+        btn.removeEventListener('click', handleButtonClick);
+      }
     };
   }, []);
 
@@ -219,7 +235,6 @@ function AddWaypointButton({
       <button
         ref={buttonRef}
         className={`map-control map-control--add ${adding ? 'is-active' : ''}`}
-        onClick={() => onToggle()}
         title={adding ? '取消添加途经点' : '添加途经点'}
         aria-pressed={adding}
       >
