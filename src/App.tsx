@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   MapContainer,
   Marker,
@@ -168,24 +168,42 @@ function AddWaypointButton({
   adding: boolean;
   onToggle: () => void;
 }) {
-  const stopMapClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
+  const guardRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const guard = guardRef.current;
+    const btn = buttonRef.current;
+    if (!guard) return;
+
+    const block = (e: Event) => {
+      // 按钮本身放行，其他 guard 区域内的点击拦截
+      if (btn && btn.contains(e.target as Node)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    };
+
+    guard.addEventListener('click', block, true);
+    guard.addEventListener('dblclick', block, true);
+    guard.addEventListener('mousedown', block, true);
+
+    return () => {
+      guard.removeEventListener('click', block, true);
+      guard.removeEventListener('dblclick', block, true);
+      guard.removeEventListener('mousedown', block, true);
+    };
+  }, []);
 
   return (
     <div
-      className="map-click-guard map-click-guard--add"
-      onClick={stopMapClick}
-      onDoubleClick={stopMapClick}
-      onMouseDown={stopMapClick}
+      ref={guardRef}
+      className={`map-click-guard map-click-guard--add${adding ? ' map-click-guard--active' : ''}`}
     >
       <button
+        ref={buttonRef}
         className={`map-control map-control--add ${adding ? 'is-active' : ''}`}
-        onClick={(event) => {
-          stopMapClick(event);
-          onToggle();
-        }}
+        onClick={() => onToggle()}
         title={adding ? '取消添加途经点' : '添加途经点'}
         aria-pressed={adding}
       >

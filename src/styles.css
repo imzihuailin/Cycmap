@@ -279,6 +279,11 @@ button {
   height: 104px;
 }
 
+.map-click-guard--active {
+  width: 130px;
+  height: 120px;
+}
+
 .map-control--add {
   top: 14px;
   width: 38px;
