@@ -1,0 +1,396 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172033;
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff;
+}
+
+.map-pane {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+.map--adding {
+  cursor: crosshair;
+}
+
+.sidebar {
+  width: 360px;
+  max-width: 42vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-left: 1px solid #d8dee8;
+  background: #fff;
+  overflow: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sidebar h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.sidebar p {
+  margin: 4px 0 0;
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.plain-button,
+.print-button {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #1f2937;
+  border-radius: 6px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.plain-button:disabled,
+.print-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.summary div {
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.summary span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.summary strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 18px;
+}
+
+.status {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+}
+
+.status--error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.waypoint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.empty-state {
+  padding: 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.waypoint-row {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+}
+
+.waypoint-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 28px;
+  border-radius: 5px;
+  background: #e2e8f0;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.waypoint-main {
+  min-width: 0;
+}
+
+.waypoint-main strong,
+.waypoint-main span {
+  display: block;
+}
+
+.waypoint-main strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.waypoint-main span {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.rename-button {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.waypoint-row:hover .rename-button,
+.rename-button:focus-visible {
+  opacity: 1;
+}
+
+.rename-input {
+  width: 100%;
+  height: 28px;
+  border: 1px solid #94a3b8;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.service-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.service-buttons button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.service-buttons button.active {
+  border-color: #2563eb;
+  background: #dbeafe;
+}
+
+.print-button {
+  width: 100%;
+  margin-top: auto;
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.waypoint-marker {
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: #ef4444;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+.map-control {
+  position: absolute;
+  right: 14px;
+  z-index: 1000;
+  border: 1px solid #b8c2d1;
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.map-click-guard {
+  position: absolute;
+  z-index: 999;
+}
+
+.map-click-guard--add {
+  top: 0;
+  right: 0;
+  width: 116px;
+  height: 104px;
+}
+
+.map-control--add {
+  top: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.map-control--add.is-active {
+  border-color: #2563eb;
+  background: #dbeafe;
+}
+
+.map-control--zoom {
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.map-control--zoom button {
+  width: 36px;
+  height: 34px;
+  border: 0;
+  background: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.map-control--zoom button + button {
+  border-top: 1px solid #d8dee8;
+}
+
+.print-card {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .map-pane {
+    min-height: 55vh;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-width: none;
+    height: 45vh;
+    border-left: 0;
+    border-top: 1px solid #d8dee8;
+  }
+}
+
+@media print {
+  body,
+  #root {
+    height: auto;
+  }
+
+  .app {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .map-pane,
+  .sidebar > :not(.print-card) {
+    display: none !important;
+  }
+
+  .sidebar {
+    display: block;
+    width: auto;
+    max-width: none;
+    height: auto;
+    border: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .print-card {
+    display: block;
+    color: #000;
+    font-size: 16px;
+  }
+
+  .print-card h2 {
+    margin: 0 0 12px;
+    font-size: 24px;
+  }
+
+  .print-summary {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .print-row {
+    display: grid;
+    grid-template-columns: 70px 1fr 90px;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid #999;
+  }
+
+  .print-row em {
+    font-style: normal;
+  }
+}

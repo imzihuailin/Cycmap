@@ -8,14 +8,36 @@
 ```json
 {
   "project_name": "Cycmap",
-  "directory_structure": [],
+  "directory_structure": [
+    "package.json",
+    "tsconfig.json",
+    "vite.config.ts",
+    "src/App.tsx",
+    "src/main.tsx",
+    "src/vite-env.d.ts",
+    "src/",
+    ".gitignore",
+    "index.html",
+    "package-lock.json",
+    "src/styles.css",
+    "tsconfig.node.json"
+  ],
   "readme": null,
-  "config_files": [],
-  "key_source_files": [],
+  "config_files": [
+    "package.json",
+    "tsconfig.json",
+    "vite.config.ts"
+  ],
+  "key_source_files": [
+    "vite.config.ts",
+    "src/App.tsx",
+    "src/main.tsx",
+    "src/vite-env.d.ts"
+  ],
   "counts": {
-    "config_files": 0,
-    "directory_entries": 0,
-    "key_source_files": 0
+    "config_files": 3,
+    "directory_entries": 12,
+    "key_source_files": 4
   }
 }
 ```
